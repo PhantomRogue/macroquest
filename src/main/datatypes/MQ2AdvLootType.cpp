@@ -212,7 +212,9 @@ enum class AdvLootItemMembers
 	Never,
 	IconID,
 	NoDrop,
-	FreeGrab
+	FreeGrab,
+	Locked,
+	Rolling
 };
 
 MQ2AdvLootItemType::MQ2AdvLootItemType() : MQ2Type("advlootitem")
@@ -232,6 +234,8 @@ MQ2AdvLootItemType::MQ2AdvLootItemType() : MQ2Type("advlootitem")
 	ScopedTypeMember(AdvLootItemMembers, IconID);
 	ScopedTypeMember(AdvLootItemMembers, NoDrop);
 	ScopedTypeMember(AdvLootItemMembers, FreeGrab);
+	ScopedTypeMember(AdvLootItemMembers, Locked);
+	ScopedTypeMember(AdvLootItemMembers, Rolling);
 }
 
 bool MQ2AdvLootItemType::GetMember(MQVarPtr VarPtr, const char* Member, char* Index, MQTypeVar& Dest)
@@ -342,6 +346,24 @@ bool MQ2AdvLootItemType::GetMember(MQVarPtr VarPtr, const char* Member, char* In
 
 	case AdvLootItemMembers::FreeGrab:
 		Dest.DWord = item.FG;
+		Dest.Type = pBoolType;
+		return true;
+
+	case AdvLootItemMembers::Locked:
+		// Check if there are Loot Details as to not get a null ref
+		if (!item.LootDetails.IsEmpty())
+		{
+			Dest.DWord = item.LootDetails[0].Locked;
+		}
+		else
+		{
+			Dest.DWord = false;
+		}
+		Dest.Type = pBoolType;
+		return true;
+
+	case AdvLootItemMembers::Rolling:
+		Dest.DWord = false;
 		Dest.Type = pBoolType;
 		return true;
 
