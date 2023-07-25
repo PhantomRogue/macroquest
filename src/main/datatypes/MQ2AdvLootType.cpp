@@ -213,8 +213,7 @@ enum class AdvLootItemMembers
 	IconID,
 	NoDrop,
 	FreeGrab,
-	Locked,
-	Rolling
+	Locked
 };
 
 MQ2AdvLootItemType::MQ2AdvLootItemType() : MQ2Type("advlootitem")
@@ -235,7 +234,6 @@ MQ2AdvLootItemType::MQ2AdvLootItemType() : MQ2Type("advlootitem")
 	ScopedTypeMember(AdvLootItemMembers, NoDrop);
 	ScopedTypeMember(AdvLootItemMembers, FreeGrab);
 	ScopedTypeMember(AdvLootItemMembers, Locked);
-	ScopedTypeMember(AdvLootItemMembers, Rolling);
 }
 
 bool MQ2AdvLootItemType::GetMember(MQVarPtr VarPtr, const char* Member, char* Index, MQTypeVar& Dest)
@@ -359,11 +357,6 @@ bool MQ2AdvLootItemType::GetMember(MQVarPtr VarPtr, const char* Member, char* In
 		{
 			Dest.DWord = false;
 		}
-		Dest.Type = pBoolType;
-		return true;
-
-	case AdvLootItemMembers::Rolling:
-		Dest.DWord = false;
 		Dest.Type = pBoolType;
 		return true;
 
